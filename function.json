@@ -1,0 +1,93 @@
+{
+  "type": "vector.function",
+  "output_length": {
+    "$starlark": "len(input)"
+  },
+  "input_split": {
+    "$starlark": "[[item] for item in input]"
+  },
+  "input_merge": {
+    "$starlark": "[item for sublist in input for item in sublist]"
+  },
+  "input_schema": {
+    "type": "array",
+    "description": "A collection of cat photographs to rank by narrative presence — the degree to which each image implies a story unfolding across time.",
+    "minItems": 2,
+    "items": {
+      "type": "image",
+      "description": "A photograph of a cat to evaluate for narrative presence."
+    }
+  },
+  "tasks": [
+    {
+      "type": "vector.completion",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "I want to see a cat photograph where the cat's body tells you something is happening. Not a posed or settled cat, but one whose posture implies a trajectory — a future that is different from the present. A cat about to leap with its weight pitched forward, ears swiveled toward an unseen sound, eyes locked and tracking something in motion, a paw lifted mid-reach, hindquarters raised in coiled readiness. Show me a cat whose body reads like a sentence that hasn't finished yet — not a yawn or stretch that resolves back into stillness, but a physical state that points somewhere."
+            }
+          ]
+        }
+      ],
+      "responses": {
+        "$starlark": "[[photo] for photo in input]"
+      },
+      "output": {
+        "$starlark": "output[\"scores\"]"
+      }
+    },
+    {
+      "type": "vector.completion",
+      "messages": [
+        {
+          "role": "developer",
+          "content": [
+            {
+              "type": "text",
+              "text": "You are a visual storytelling expert who identifies scenes charged with unresolved tension. You look for photographs where the relationship between elements has not yet been settled — where something between the cat and its surroundings could go more than one way. You prefer scenes that feel like situations with uncertain outcomes over portraits where everything has already been decided."
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Find me a cat photograph where the scene feels like a situation, not a portrait. I want unresolved tension between the cat and something else in the frame — or something conspicuously beyond it. A hand reaching toward a cat that hasn't decided whether to accept the touch. A cat poised at the edge of a surface with the ground visible below. A cat and another animal locked in mutual awareness. A cat staring intently through a doorway or at something outside the frame that the viewer cannot see. The relationship between the cat and its surroundings should feel undecided, as if the next moment could unfold in more than one direction."
+            }
+          ]
+        }
+      ],
+      "responses": {
+        "$starlark": "[[photo] for photo in input]"
+      },
+      "output": {
+        "$starlark": "output[\"scores\"]"
+      }
+    },
+    {
+      "type": "vector.completion",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "I'm curating a collection of cat photographs that feel like moments pulled from the flow of time, not timeless facts. I need a photograph where the environment itself tells you that time is passing — where the scene could only have happened once, at exactly this point in the day or season or sequence of events. A cat silhouetted against a dusk sky as the light is fading. A cat on a doorstep still wet from rain that has just stopped. A cat resting among scattered objects that hint at something that happened before the photograph was taken. The scene should feel anchored in an ongoing stream of experience, not floating in a blank, interchangeable nowhere. Show me a photograph where the world around the cat tells its own story about what came before and what comes next."
+            }
+          ]
+        }
+      ],
+      "responses": {
+        "$starlark": "[[photo] for photo in input]"
+      },
+      "output": {
+        "$starlark": "output[\"scores\"]"
+      }
+    }
+  ],
+  "description": "Ranks cat photographs by narrative presence — the degree to which each image implies a story unfolding across time. Evaluates kinetic implication, relational tension, and temporal atmosphere to score images that feel like mid-scene moments above those that feel static and resolved."
+}
